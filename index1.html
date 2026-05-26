@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AppForge • Instant Web App Builder</title>
+  <!-- Google Fonts & simple reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, #0a0f1e, #03060c);
+      font-family: 'Inter', sans-serif;
+      color: #eef5ff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+    }
+
+    /* main card */
+    .forge-card {
+      max-width: 780px;
+      width: 100%;
+      background: rgba(18, 25, 40, 0.75);
+      backdrop-filter: blur(12px);
+      border-radius: 3rem;
+      border: 1px solid rgba(72, 187, 255, 0.25);
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 255, 0.05);
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    /* header */
+    .forge-header {
+      padding: 2rem 2rem 0.75rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(72, 187, 255, 0.2);
+    }
+
+    .forge-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF, #7bc9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .forge-header p {
+      color: #9ab3d5;
+      margin-top: 0.5rem;
+      font-weight: 450;
+    }
+
+    .badge {
+      display: inline-flex;
+      background: #1e2a3e;
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      gap: 8px;
+      backdrop-filter: blur(4px);
+      color: #8bcbff;
+    }
+
+    /* form container */
+    .form-container {
+      padding: 2rem 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .input-group label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      color: #bfd9ff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group input, .logo-preview-area {
+      background: #0f1422e0;
+      border: 1px solid #2b3b54;
+      border-radius: 1.6rem;
+      padding: 0.9rem 1.2rem;
+      font-size: 1rem;
+      color: white;
+      font-family: 'Inter', monospace;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #2d9eff;
+      box-shadow: 0 0 0 3px rgba(45, 158, 255, 0.2);
+    }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    #themeColor {
+      width: 70px;
+      height: 55px;
+      border-radius: 1.5rem;
+      background: #0f1422;
+      border: 1px solid #3e5a7c;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .logo-upload-area {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-preview {
+      width: 60px;
+      height: 60px;
+      background: #11161f;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #3b6e9f;
+      overflow: hidden;
+    }
+
+    .logo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .convert-btn {
+      background: linear-gradient(105deg, #1a73e8, #0d47a1);
+      border: none;
+      padding: 1rem;
+      border-radius: 3rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: white;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 18px rgba(0, 100, 255, 0.3);
+    }
+
+    .convert-btn:hover {
+      transform: scale(0.98);
+      background: linear-gradient(105deg, #0f5bc2, #093b7a);
+      box-shadow: 0 4px 12px rgba(0, 150, 255, 0.4);
+    }
+
+    /* install panel */
+    .install-panel {
+      background: rgba(0, 10, 25, 0.7);
+      margin: 0 2rem 2rem 2rem;
+      border-radius: 2rem;
+      padding: 1.2rem 1.5rem;
+      backdrop-filter: blur(8px);
+      border: 1px solid #2d9eff40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .install-btn {
+      background: #00c3a0;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 2.5rem;
+      font-weight: bold;
+      color: #0a1929;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(0, 200, 150, 0.3);
+    }
+
+    .install-btn:active {
+      transform: scale(0.96);
+    }
+
+    .info-message {
+      font-size: 0.85rem;
+      color: #bbd9ff;
+    }
+
+    .preview-badge {
+      font-size: 0.7rem;
+      background: #101826;
+      padding: 0.3rem 0.8rem;
+      border-radius: 40px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.7rem;
+      color: #4f6f8f;
+      border-top: 1px solid #1f2a3e;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .success-animation {
+      animation: pulse 0.5s ease;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+<div class="forge-card" id="appRoot">
+  <div class="forge-header">
+    <h1>📱 AppForge · Web2App</h1>
+    <p>Turn any website into a native-like installable app — PWA power, one click.</p>
+    <div class="badge">
+      ⚡ PWA Generator · 💾 Offline Ready · 🚀 Install to Home Screen
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div class="input-group">
+      <label>🌐 Website URL</label>
+      <input type="url" id="siteUrl" placeholder="https://amazon.in or https://yourwebsite.com" value="https://pwa-preview-demo.glitch.me/">
+    </div>
+    <div class="input-group">
+      <label>✨ App Name</label>
+      <input type="text" id="appName" placeholder="e.g., MyStore, Amazon App" value="WebApp Forge">
+    </div>
+    <div class="input-group">
+      <label>🎨 Theme Color</label>
+      <div class="color-row">
+        <input type="color" id="themeColor" value="#2d9eff">
+        <span style="font-size: 0.8rem; opacity: 0.8;">status bar + splash tint</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>🖼️ App Icon (512x512 recommended)</label>
+      <div class="logo-upload-area">
+        <input type="file" id="iconUpload" accept="image/png,image/jpeg,image/webp">
+        <div class="logo-preview" id="logoPreview">
+          <span style="font-size: 24px;">🚀</span>
+        </div>
+      </div>
+    </div>
+    <button class="convert-btn" id="generatePwaBtn">
+      ⚡ Generate & Register PWA App
+    </button>
+  </div>
+
+  <!-- Install popup panel (shows only when PWA criteria ready) -->
+  <div class="install-panel" id="installPanel" style="display: none;">
+    <div class="info-message">
+      ✅ <strong>App is ready!</strong> Install it like a real native app.
+    </div>
+    <button class="install-btn" id="installAppBtn">
+      📲 Install App — Home screen
+    </button>
+  </div>
+  <footer>
+    💡 Works like APK — fullscreen, offline cache, splash screen. No backend, pure HTML/JS/CSS
+  </footer>
+</div>
+
+<script>
+  // ---------- GLOBAL STATE ----------
+  let deferredPrompt = null;          // stores beforeinstallprompt event
+  let currentManifestURL = null;
+  let swRegistration = null;
+  let appConfig = {
+    url: '',
+    name: '',
+    theme: '#2d9eff',
+    iconDataUrl: null,       // base64 image for icon
+    iconMime: 'image/png'
+  };
+
+  // DOM elements
+  const siteUrlInput = document.getElementById('siteUrl');
+  const appNameInput = document.getElementById('appName');
+  const themeColorPicker = document.getElementById('themeColor');
+  const iconUpload = document.getElementById('iconUpload');
+  const logoPreviewDiv = document.getElementById('logoPreview');
+  const generateBtn = document.getElementById('generatePwaBtn');
+  const installPanel = document.getElementById('installPanel');
+  const installBtn = document.getElementById('installAppBtn');
+
+  // Helper: display preview of uploaded icon
+  function updateIconPreview(file) {
+    if (!file) {
+      // default emoji or fallback
+      logoPreviewDiv.innerHTML = '<span style="font-size: 28px;">🌐</span>';
+      appConfig.iconDataUrl = null;
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imgData = e.target.result;
+      appConfig.iconDataUrl = imgData;
+      appConfig.iconMime = file.type;
+      logoPreviewDiv.innerHTML = `<img src="${imgData}" alt="icon preview" style="width:100%;height:100%;object-fit:cover;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  iconUpload.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) {
+      updateIconPreview(e.target.files[0]);
+    } else {
+      appConfig.iconDataUrl = null;
+      logoPreviewDiv.innerHTML = '<span style="font-size: 28px;">🚀</span>';
+    }
+  });
+
+  // function to dynamically generate manifest.json content and serve it via blob URL
+  function generateManifestBlob() {
+    let siteUrl = siteUrlInput.value.trim();
+    if (!siteUrl.startsWith('http')) {
+      siteUrl = 'https://' + siteUrl;
+    }
+    // ensure valid url
+    let appShortName = appNameInput.value.trim().slice(0, 12);
+    const fullName = appNameInput.value.trim() || "WebApp Studio";
+    const themeColor = themeColorPicker.value;
+
+    let iconsArray = [];
+    // if user uploaded custom icon, use it (single 512x512 and also 192x192)
+    if (appConfig.iconDataUrl) {
+      iconsArray = [
+        {
+          "src": appConfig.iconDataUrl,
+          "sizes": "512x512",
+          "type": appConfig.iconMime || "image/png",
+          "purpose": "any maskable"
+        },
+        {
+          "src": appConfig.iconDataUrl,
+          "sizes": "192x192",
+          "type": appConfig.iconMime || "image/png"
+        }
+      ];
+    } else {
+      // default emoji fallback – but we generate data uri simple svg for better compatibility
+      const defaultIconSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%232d9eff'/%3E%3Ctext x='256' y='380' font-size='280' text-anchor='middle' fill='white' font-family='monospace'%3E🚀%3C/text%3E%3C/svg%3E`;
+      iconsArray = [
+        { "src": defaultIconSvg, "sizes": "512x512", "type": "image/svg+xml" },
+        { "src": defaultIconSvg, "sizes": "192x192", "type": "image/svg+xml" }
+      ];
+    }
+
+    const manifest = {
+      name: fullName,
+      short_name: appShortName || fullName.slice(0, 12),
+      start_url: siteUrl,
+      display: "standalone",
+      background_color: "#0a0f1a",
+      theme_color: themeColor,
+      description: `Install ${fullName} - web app converted to native feel`,
+      icons: iconsArray,
+      scope: "/",
+      orientation: "portrait"
+    };
+    return manifest;
+  }
+
+  // Function to register service worker & dynamic manifest, then trigger install ready
+  async function buildAndRegisterPWA() {
+    // collect & validate url
+    let targetUrl = siteUrlInput.value.trim();
+    if (!targetUrl) {
+      alert("❌ Please enter a valid website URL (https://...)");
+      return false;
+    }
+    if (!targetUrl.startsWith('http')) targetUrl = 'https://' + targetUrl;
+    const appTitle = appNameInput.value.trim() || "PWA App";
+    const themeClr = themeColorPicker.value;
+
+    // update local config
+    appConfig.url = targetUrl;
+    appConfig.name = appTitle;
+    appConfig.theme = themeClr;
+
+    // 1. Generate manifest dynamically and set it as <link rel="manifest">
+    const manifestObj = generateManifestBlob();
+    const manifestJSON = JSON.stringify(manifestObj, null, 2);
+    const manifestBlob = new Blob([manifestJSON], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    
+    // remove existing manifest link if any
+    let existingLink = document.querySelector('link[rel="manifest"]');
+    if (existingLink) existingLink.remove();
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = manifestURL;
+    document.head.appendChild(manifestLink);
+    currentManifestURL = manifestURL;
+
+    // 2. Register or update Service Worker (provides offline cache, install event)
+    if ('serviceWorker' in navigator) {
+      // unregister previous sw to avoid confusion
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (let reg of registrations) {
+        if (reg.active && reg.active.scriptURL.includes('dynamicPWAsw')) {
+          await reg.unregister();
+        }
+      }
+      // generate service worker script that caches the target URL & offers offline fallback
+      const swCode = `
+        const CACHE_NAME = 'pwa-forge-v1';
+        const TARGET_URL = '${targetUrl}';
+        
+        self.addEventListener('install', event => {
+          console.log('[SW] Installing...');
+          event.waitUntil(
+            caches.open(CACHE_NAME).then(cache => {
+              return cache.add(new Request(TARGET_URL, { mode: 'no-cors' })).catch(()=>{});
+            })
+          );
+          self.skipWaiting();
+        });
+        
+        self.addEventListener('fetch', event => {
+          const requestUrl = event.request.url;
+          if (event.request.mode === 'navigate') {
+            event.respondWith(
+              fetch(event.request).catch(() => {
+                return caches.match(TARGET_URL).then(resp => {
+                  return resp || new Response('<h2>Offline — but app is installed, connect to internet to view website</h2>', {
+                    headers: { 'Content-Type': 'text/html' }
+                  });
+                });
+              })
+            );
+          } else {
+            event.respondWith(
+              caches.match(event.request).then(response => {
+                return response || fetch(event.request);
+              })
+            );
+          }
+        });
+      `;
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      const swURL = URL.createObjectURL(swBlob);
+      try {
+        const registration = await navigator.serviceWorker.register(swURL, { scope: '/' });
+        swRegistration = registration;
+        console.log('SW registered successfully');
+        URL.revokeObjectURL(swURL);
+      } catch (err) {
+        console.error('SW registration error', err);
+        alert('⚠️ Service worker error, but manifest will work. Use HTTPS or localhost for full install.');
+        return false;
+      }
+    } else {
+      alert("⚠️ Service Worker not supported, but PWA installation might not work. Try Chrome/Edge on Android or desktop.");
+      return false;
+    }
+
+    // wait a bit to ensure browser detects manifest + sw
+    await new Promise(r => setTimeout(r, 400));
+    
+    // force the beforeinstallprompt might not fire again instantly, but we can dispatch a custom event
+    // show install panel based on existent deferredPrompt OR check if install available
+    if (deferredPrompt) {
+      installPanel.style.display = 'flex';
+    } else {
+      // In case install prompt is not yet fired but PWA criteria satisfied, panel will appear when event triggers.
+      installPanel.style.display = 'flex';
+      document.querySelector('.install-panel .info-message').innerHTML = "✨ PWA app is ready! Browser will show install prompt OR click below (if supported)";
+    }
+    // also store app data in localStorage for possible demo on redirect
+    localStorage.setItem('pwa_forge_url', targetUrl);
+    localStorage.setItem('pwa_forge_name', appTitle);
+    
+    // show success animation
+    generateBtn.classList.add('success-animation');
+    setTimeout(() => generateBtn.classList.remove('success-animation'), 500);
+    return true;
+  }
+
+  // listen for beforeinstallprompt to catch install event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installPanel.style.display = 'flex';
+    const infoDiv = installPanel.querySelector('.info-message');
+    if (infoDiv) infoDiv.innerHTML = "✅ Ready to install! Tap below to add to home screen.";
+  });
+
+  // Install button handler
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response: ${outcome}`);
+      deferredPrompt = null;
+      if (outcome === 'accepted') {
+        installPanel.style.display = 'none';
+        alert('🎉 App installed! Check your home screen.');
+      }
+    } else {
+      // fallback: custom install guide or manual instructions
+      if (navigator.userAgent.includes('Android') && 'serviceWorker' in navigator) {
+        alert("📱 Open browser menu → 'Install app' / 'Add to Home screen' manually. But manifest is ready.");
+      } else {
+        alert("📲 To install: Use browser's 'Add to Home screen' option, or ensure you are on HTTPS/localhost.");
+      }
+    }
+  });
+
+  // on generate click: build manifest + SW, and refresh PWA identity
+  generateBtn.addEventListener('click', async () => {
+    // Ensure that we have icon preview data if file uploaded but not yet converted to base64? already done in onchange
+    // if no icon uploaded but user skipped, it's fine.
+    const success = await buildAndRegisterPWA();
+    if (success) {
+      // also create a small toast or update the install panel style
+      const panelMsg = installPanel.querySelector('.info-message');
+      if (panelMsg) panelMsg.innerHTML = "✅ PWA registered! Click install below to add to home screen.";
+      installPanel.style.display = 'flex';
+      // after generating, we could force a location reload to activate new service worker scope
+      // but we need not reload page to keep UI. Service worker will be active.
+      alert(`🔥 '${appConfig.name}' PWA is ready!\nYou can now install it like a real APK.\nOpen browser menu or tap install button.`);
+    } else {
+      alert("❌ Failed: make sure you use HTTPS or localhost for full PWA features.");
+    }
+  });
+
+  // auto-detection on page load: check if we have deferredPrompt from previous attempt?
+  window.addEventListener('load', async () => {
+    // force re-trigger manifest availability after a small delay (for initial page)
+    // Give a default demo suggestion
+    if ('serviceWorker' in navigator) {
+      // pre-fill demo default icon preview style friendly
+      logoPreviewDiv.innerHTML = '<span style="font-size: 28px;">🌐</span>';
+      // check if browser supports and optionally register dummy (but will be replaced by user click)
+    }
+    // additional: listen to appinstalled event for analytics
+    window.addEventListener('appinstalled', () => {
+      console.log('PWA installed successfully');
+      installPanel.style.display = 'none';
+    });
+  });
+
+  // optional: Theme color preview updates dynamically on meta tag (real-time)
+  function updateMetaTheme(color) {
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    meta.content = color;
+  }
+  themeColorPicker.addEventListener('input', (e) => updateMetaTheme(e.target.value));
+  updateMetaTheme(themeColorPicker.value);
+
+  // prefill demo example for better onboarding
+  siteUrlInput.value = "https://www.pwabuilder.com";
+  appNameInput.value = "PWA Demo Hub";
+  themeColorPicker.value = "#3a86ff";
+  
+  // reset install panel if not active yet
+  // also show that we can generate immediately? Not needed. but user can click convert
+  
+  // if the user has previously visited and we haven't built, ensure that we can display.
+  // final touch: notify if service worker missing or insecure
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost' && !location.hostname.includes('127.0.0.1')) {
+    const warnMsg = document.createElement('div');
+    warnMsg.style.background = '#ffaa3330';
+    warnMsg.style.padding = '0.7rem';
+    warnMsg.style.borderRadius = '2rem';
+    warnMsg.style.margin = '1rem 2rem';
+    warnMsg.style.fontSize = '0.8rem';
+    warnMsg.innerHTML = "⚠️ For full install experience, serve this page over HTTPS (localhost works). PWA features limited.";
+    document.querySelector('.forge-card').appendChild(warnMsg);
+  }
+
+  // helper: clear previous object urls on generate
+  if (window.cleanupManifest) window.cleanupManifest();
+  window.cleanupManifest = () => {
+    if (currentManifestURL) URL.revokeObjectURL(currentManifestURL);
+  };
+</script>
+</body>
+</html>
